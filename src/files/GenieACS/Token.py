@@ -1,4 +1,0 @@
-TELEGRAM_TOKEN = '7569080999:AAFVgwxqJ0KyXRLtzYmJo4GVlru-A982YsA'
-# MIKROTIK_REST_API_URL = 'http://mikrotikip/rest'
-# MIKROTIK_REST_API_USER = 'youuser'
-# MIKROTIK_REST_API_PASSWORD = 'youpassword'
