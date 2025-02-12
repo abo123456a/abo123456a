@@ -97,3 +97,10 @@ systemctl restart apache2
 # Final message
 echo "WordPress installation is complete!"
 echo "You can now access your WordPress site at: http://<your-server-ip>/wordpress"
+
+# Watermark / Signature at the end of the script
+echo "--------------------------------------------------"
+echo "Script created by: aboo"
+echo "For more info, visit: abooo.vercel.app"
+echo "terimakasih telah menggunakan skip aboo"
+echo "--------------------------------------------------"
