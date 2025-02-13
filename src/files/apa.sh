@@ -1,39 +1,87 @@
 #!/bin/bash
 
-# Ensure the script is running as root (or with sudo)
-if [ "$(id -u)" -ne 0 ]; then
-    echo "This script must be run as root" 1>&2
-    exit 1
+# Install expect if it's not installed already
+echo "Checking for 'expect' package..."
+if ! command -v expect &> /dev/null; then
+    echo "'expect' not found. Installing..."
+    apt update -y
+    apt install expect -y
+else
+    echo "'expect' is already installed."
 fi
 
-# Install necessary packages (Apache2, MariaDB, PHP, phpMyAdmin, etc.) in one go to speed up installation
-echo "Installing Apache2, PHP, MariaDB, phpMyAdmin, wget, unzip, curl, and expect..."
+# Ask user for database name, username, and password at the start
+echo "Please enter the WordPress database details:"
+
+# Ask for database name
+printf "%-50s" "Enter the name for the WordPress database (default: wordpress):"
+read DB_NAME
+DB_NAME=${DB_NAME:-wordpress}  # Set default to 'wordpress' if empty input
+
+# Ask for username
+printf "%-50s" "Enter the username for the WordPress database user (default: wpuser):"
+read DB_USER
+DB_USER=${DB_USER:-wpuser}  # Set default to 'wpuser' if empty input
+
+# Ask for password
+printf "%-50s" "Enter the password for the WordPress database user (default: password):"
+read -s DB_PASS
+DB_PASS=${DB_PASS:-password}  # Set default to 'password' if empty input
+
+# Update and Install necessary packages
+echo "Installing Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, and curl..."
 apt update -y
-apt install apache2 mariadb-server php phpmyadmin wget unzip curl expect -y
+apt install apache2 php phpmyadmin mariadb-server wget unzip curl -y
 
-# Ensure PHP is installed and configured properly
-echo "Configuring PHP..."
-apt install php-mysqli php-xml php-curl php-mbstring php-zip php-soap -y
+# Change to the web server's root directory
+echo "Changing directory to /var/www/html/"
+cd /var/www/html/
 
-# Automatically set up MariaDB (MySQL)
-echo "Securing MariaDB installation..."
-mysql_secure_installation <<EOF
+# Check if WordPress directory exists, if not, create it
+if [ ! -d "/var/www/html/wordpress" ]; then
+    echo "Creating directory for WordPress..."
+    mkdir wordpress
+fi
 
-Y
-rootpassword
-rootpassword
-Y
-Y
-Y
-Y
-EOF
+# Download WordPress
+echo "Downloading WordPress..."
+wget http://172.16.90.2/unduh/wordpress.zip
 
-# Ask user for database details (defaults are provided)
-DB_NAME=${DB_NAME:-wordpress}
-DB_USER=${DB_USER:-wpuser}
-DB_PASS=${DB_PASS:-password}
+# Unzip the WordPress package
+echo "Unzipping WordPress..."
+unzip -o wordpress.zip -d wordpress/
 
-# Create database and user for WordPress
+# Set the appropriate permissions for the WordPress directory
+echo "Setting permissions for WordPress directory..."
+chmod -R 755 wordpress
+
+# Automating MySQL secure installation
+echo "Running mysql_secure_installation automatically..."
+
+SECURE_MYSQL=$(expect -c "
+spawn mysql_secure_installation
+expect \"Enter current password for root (enter for none):\"
+send \"\r\"
+expect \"Set root password? [Y/n]\"
+send \"Y\r\"
+expect \"New password:\"
+send \"rootpassword\r\"
+expect \"Re-enter new password:\"
+send \"rootpassword\r\"
+expect \"Remove anonymous users? [Y/n]\"
+send \"Y\r\"
+expect \"Disallow root login remotely? [Y/n]\"
+send \"Y\r\"
+expect \"Remove test database and access to it? [Y/n]\"
+send \"Y\r\"
+expect \"Reload privilege tables now? [Y/n]\"
+send \"Y\r\"
+expect eof
+")
+
+echo "$SECURE_MYSQL"
+
+# Run SQL commands to create the database and user
 echo "Creating WordPress database and user..."
 mysql -u root -prootpassword <<EOF
 CREATE DATABASE ${DB_NAME};
@@ -42,29 +90,7 @@ GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
-# Set up Apache2 for WordPress
-echo "Setting up Apache2 for WordPress..."
-cp /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
-a2enconf phpmyadmin
-systemctl restart apache2
-
-# Change to the web server's root directory
-echo "Changing directory to /var/www/html/..."
-cd /var/www/html/
-
-# Download WordPress
-echo "Downloading WordPress..."
-wget http://172.16.90.2/unduh/wordpress.zip
-
-# Unzip the WordPress package
-echo "Unzipping WordPress..."
-unzip wordpress.zip
-
-# Set the appropriate permissions for the WordPress directory
-echo "Setting permissions for WordPress directory..."
-chmod -R 755 wordpress
-
-# Configure wp-config.php with database details
+# Configure wp-config.php with the database details
 echo "Configuring wp-config.php..."
 
 # Copy the sample config file
@@ -75,11 +101,11 @@ sed -i "s/database_name_here/${DB_NAME}/" /var/www/html/wordpress/wp-config.php
 sed -i "s/username_here/${DB_USER}/" /var/www/html/wordpress/wp-config.php
 sed -i "s/password_here/${DB_PASS}/" /var/www/html/wordpress/wp-config.php
 
-# Set permissions for wp-config.php (important for security)
+# Set permissions for the wp-config.php file (important for security)
 chmod 644 /var/www/html/wordpress/wp-config.php
 
-# Restart Apache2 server to apply changes
-echo "Restarting Apache2..."
+# Restart Apache to ensure the web server is up-to-date
+echo "Restarting Apache server..."
 systemctl restart apache2
 
 # Final message
@@ -90,5 +116,5 @@ echo "You can now access your WordPress site at: http://<your-server-ip>/wordpre
 echo "--------------------------------------------------"
 echo "Script created by: aboo"
 echo "For more info, visit: abooo.vercel.app"
-echo "terimakasih telah menggunakan skip aboo"
+echo "Terimakasih telah menggunakan script aboo!"
 echo "--------------------------------------------------"
