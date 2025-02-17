@@ -1,50 +1,34 @@
 #!/bin/bash
 
-# Install expect if it's not installed already
-
-# Ask user for database name, username, and password at the start
-echo "Please enter the WordPress database details:"
-
-# Ask for database name
-printf "%-50s" "Enter the name for the WordPress database (default: wordpress):"
-read DB_NAME
-DB_NAME=${DB_NAME:-wordpress}  # Set default to 'wordpress' if empty input
-
-# Ask for username
-printf "%-50s" "Enter the username for the WordPress database user (default: wpuser):"
-read DB_USER
-DB_USER=${DB_USER:-wpuser}  # Set default to 'wpuser' if empty input
-
-# Ask for password
-printf "%-50s" "Enter the password for the WordPress database user (default: password):"
-read -s DB_PASS
-DB_PASS=${DB_PASS:-password}  # Set default to 'password' if empty input
-
-# Update and Install necessary packages (with non-interactive frontend to skip prompts)
+# Set mode non-interaktif untuk mencegah prompt
 export DEBIAN_FRONTEND=noninteractive
 
+# Atur password phpMyAdmin sebelum instalasi untuk menghindari prompt
+echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/app-password-confirm password rootpassword" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/mysql/admin-pass password rootpassword" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/mysql/app-pass password rootpassword" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
+
+# Instalasi paket yang diperlukan
 echo "Installing Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, and curl..."
 apt update -y
 apt install apache2 php phpmyadmin mariadb-server wget unzip curl -y
 
-# Change to the web server's root directory
-echo "Changing directory to /var/www/html/"
+# Pindah ke direktori root web server
 cd /var/www/html/
 
-# Download WordPress
+# Download dan ekstrak WordPress
 echo "Downloading WordPress..."
 wget http://172.16.90.2/unduh/wordpress.zip
-
-# Unzip the WordPress package
-echo "Unzipping WordPress..."
 unzip wordpress.zip
 
-# Set the appropriate permissions for the WordPress directory
-echo "Setting permissions for WordPress directory..."
+# Beri izin akses ke folder WordPress
 chmod -R 777 wordpress
 
-# Automating MySQL secure installation
+# Konfigurasi otomatis mysql_secure_installation
 echo "Running mysql_secure_installation automatically..."
+apt install expect -y
 
 SECURE_MYSQL=$(expect -c "
 spawn mysql_secure_installation
@@ -69,40 +53,30 @@ expect eof
 
 echo "$SECURE_MYSQL"
 
-# Run SQL commands to create the database and user
-echo "Creating WordPress database and user..."
+# Buat database dan user untuk WordPress
 mysql -u root -prootpassword <<EOF
-CREATE DATABASE ${DB_NAME};
-CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';
-GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost';
+CREATE DATABASE wordpress;
+CREATE USER 'wpuser'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
-# Configure wp-config.php with the database details
-echo "Configuring wp-config.php..."
-
-# Copy the sample config file
+# Konfigurasi wp-config.php
 cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
-
-# Replace the database name, user, and password in wp-config.php
-sed -i "s/database_name_here/${DB_NAME}/" /var/www/html/wordpress/wp-config.php
-sed -i "s/username_here/${DB_USER}/" /var/www/html/wordpress/wp-config.php
-sed -i "s/password_here/${DB_PASS}/" /var/www/html/wordpress/wp-config.php
-
-# Set permissions for the wp-config.php file (important for security)
+sed -i "s/database_name_here/wordpress/" /var/www/html/wordpress/wp-config.php
+sed -i "s/username_here/wpuser/" /var/www/html/wordpress/wp-config.php
+sed -i "s/password_here/password/" /var/www/html/wordpress/wp-config.php
 chmod 644 /var/www/html/wordpress/wp-config.php
 
-# Restart Apache to ensure the web server is up-to-date
-echo "Restarting Apache server..."
+# Restart Apache
 systemctl restart apache2
 
-# Final message
+# Pesan akhir
 echo "WordPress installation is complete!"
 echo "You can now access your WordPress site at: http://<your-server-ip>/wordpress"
 
-# Watermark / Signature at the end of the script
 echo "--------------------------------------------------"
 echo "Script created by: aboo"
 echo "For more info, visit: abooo.vercel.app"
-echo "terimakasih telah menggunakan skip aboo"
+echo "Terima kasih telah menggunakan skrip aboo!"
 echo "--------------------------------------------------"
