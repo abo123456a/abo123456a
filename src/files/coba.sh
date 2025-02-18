@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Install expect if it's not installed already
-echo "Checking and installing necessary packages..."
-apt update -y
-apt install -y apache2 php phpmyadmin mariadb-server wget unzip curl expect
+if ! command -v expect &> /dev/null; then
+    echo "Installing expect..."
+    apt install -y expect
+fi
 
 # Ask user for database name, username, and password at the start
 echo "Please enter the WordPress database details:"
@@ -23,18 +24,15 @@ printf "%-50s" "Enter the password for the WordPress database user (default: pas
 read -s DB_PASS
 DB_PASS=${DB_PASS:-password}  # Set default to 'password' if empty input
 
-# Install Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, and curl
-echo "Installing Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, curl..."
+# Update and Install necessary packages
+echo "Installing Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, and curl..."
 export DEBIAN_FRONTEND=noninteractive
+apt update -y
 apt install -y apache2 php phpmyadmin mariadb-server wget unzip curl
 unset DEBIAN_FRONTEND
 
-# Ensure phpMyAdmin is linked to the Apache directory
-echo "Setting up phpMyAdmin on Apache..."
-ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
-
 # Change to the web server's root directory
-echo "Changing directory to /var/www/html/..."
+echo "Changing directory to /var/www/html/"
 cd /var/www/html/
 
 # Download WordPress
@@ -47,10 +45,11 @@ unzip wordpress.zip
 
 # Set the appropriate permissions for the WordPress directory
 echo "Setting permissions for WordPress directory..."
-chmod -R 777 wordpress
+chmod -R 755 wordpress
 
 # Automating MySQL secure installation
 echo "Running mysql_secure_installation automatically..."
+
 SECURE_MYSQL=$(expect -c "
 spawn mysql_secure_installation
 expect \"Enter current password for root (enter for none):\"
@@ -71,6 +70,7 @@ expect \"Reload privilege tables now? [Y/n]\"
 send \"Y\r\"
 expect eof
 ")
+
 echo "$SECURE_MYSQL"
 
 # Run SQL commands to create the database and user
@@ -95,6 +95,10 @@ sed -i "s/password_here/${DB_PASS}/" /var/www/html/wordpress/wp-config.php
 
 # Set permissions for the wp-config.php file (important for security)
 chmod 644 /var/www/html/wordpress/wp-config.php
+
+# Create a symbolic link for phpMyAdmin
+echo "Creating symbolic link for phpMyAdmin..."
+ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
 
 # Restart Apache to ensure the web server is up-to-date
 echo "Restarting Apache server..."
