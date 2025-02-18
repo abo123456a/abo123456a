@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # Install expect if it's not installed already
+echo "Checking and installing necessary packages..."
+apt update -y
+apt install -y apache2 php phpmyadmin mariadb-server wget unzip curl expect
 
 # Ask user for database name, username, and password at the start
 echo "Please enter the WordPress database details:"
@@ -20,15 +23,18 @@ printf "%-50s" "Enter the password for the WordPress database user (default: pas
 read -s DB_PASS
 DB_PASS=${DB_PASS:-password}  # Set default to 'password' if empty input
 
-# Update and Install necessary packages
-echo "Installing Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, and curl..."
+# Install Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, and curl
+echo "Installing Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, curl..."
 export DEBIAN_FRONTEND=noninteractive
-apt update -y
 apt install -y apache2 php phpmyadmin mariadb-server wget unzip curl
 unset DEBIAN_FRONTEND
 
+# Ensure phpMyAdmin is linked to the Apache directory
+echo "Setting up phpMyAdmin on Apache..."
+ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
+
 # Change to the web server's root directory
-echo "Changing directory to /var/www/html/"
+echo "Changing directory to /var/www/html/..."
 cd /var/www/html/
 
 # Download WordPress
@@ -45,7 +51,6 @@ chmod -R 777 wordpress
 
 # Automating MySQL secure installation
 echo "Running mysql_secure_installation automatically..."
-
 SECURE_MYSQL=$(expect -c "
 spawn mysql_secure_installation
 expect \"Enter current password for root (enter for none):\"
@@ -66,7 +71,6 @@ expect \"Reload privilege tables now? [Y/n]\"
 send \"Y\r\"
 expect eof
 ")
-
 echo "$SECURE_MYSQL"
 
 # Run SQL commands to create the database and user
@@ -99,6 +103,7 @@ systemctl restart apache2
 # Final message
 echo "WordPress installation is complete!"
 echo "You can now access your WordPress site at: http://<your-server-ip>/wordpress"
+echo "You can access phpMyAdmin at: http://<your-server-ip>/phpmyadmin"
 
 # Watermark / Signature at the end of the script
 echo "--------------------------------------------------"
