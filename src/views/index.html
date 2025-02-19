@@ -1,97 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sufyannn Portfolio</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta name="description" content="Toko top up game terpercaya, abo.store menyediakan top up untuk berbagai game populer.">
+    <meta name="author" content="Abo Store">
+    <title>Abo Store - Top Up Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .game-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+
+        .game-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: scale(1.05);
+        }
+
+        .game-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .game-card h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .game-card button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .game-card button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .contact-info p {
+            font-size: 16px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about" class="scroll-link">About Me</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#skills">Skill</a></li>
-                <li><a href="#contact">Contact Me</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <!-- Home Section -->
-    <section id="home">
-        <div class="content fade-in">
-            <h1>Hi, It's <span id="name">SUFYAN</span></h1>
-            <p>I'm a <span class="role">Frontend Dev</span></p>
-            <p>I am a student of Telecommunication Computer Network Engineering. I love design and technology.</p>
-            <p>Follow Us</p>
-            <div class="social-icons">
-                <a href="https://www.tiktok.com/@sufyann032?_t=ZS-8rp1P0pbv1U&_r=1"><img src="https://i.pinimg.com/originals/e4/15/d6/e415d6bd27900cc066d0b8b23a7f1055.png" alt="TikTok"></a>
-                <a href="https://www.instagram.com/sufyann.n/profilecard/?igsh=MW0xa3hiZnFpeDloaw==" target="_blank"><img src="/img/logig.png" alt="Instagram"></a>
-                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"></a>
-            </div>
-            <button class="contact-button">Contact Me</button>
+<header>
+    <h1>Abo Store - Top Up Game</h1>
+    <p>Top Up untuk berbagai game populer dengan harga terbaik!</p>
+</header>
+
+<div class="container">
+    <div class="game-list">
+        <div class="game-card">
+            <img src="https://via.placeholder.com/100" alt="Game 1">
+            <h3>Game 1</h3>
+            <button>Top Up</button>
         </div>
-        <div class="profile-picture fade-in">
-            <img src="/img/profil.jpeg" alt="Profile Picture">
+
+        <div class="game-card">
+            <img src="https://via.placeholder.com/100" alt="Game 2">
+            <h3>Game 2</h3>
+            <button>Top Up</button>
         </div>
-    </section>
 
-    <!-- About Me Section -->
-    <section id="about" class="about-section fade-in">
-        <h2>About Me</h2>
-        <p>Saya SUFYAN, Seorang pelajar TJKT. Dengan latar belakang sedikit tertarik dengan pengembangan web, khususnya PHP dan MySQL, saya berminat untuk terus belajar dan mengembangkan keterampilan saya di dunia teknologi.</p>
-    </section>
-
-    <!-- My Hobbies Section -->
-    <section id="hobbies" class="hobbies-section fade-in">
-        <h2>My Hobbies</h2>
-        <div class="hobby-container">
-            <div class="hobby-item" data-hobby="Programming">
-                <img src="/img/sb.jpeg" alt="Programming">
-                <p>Pintu Rimba</p>
-            </div>
-            <div class="hobby-item" data-hobby="Graphic Design">
-                <img src="/img/sb2.jpeg" alt="Graphic Design">
-                <p>Diatas Awan</p>
-            </div>
-            <div class="hobby-item" data-hobby="Photography">
-                <img src="/img/sb3.jpeg" alt="Photography">
-                <p>Puncak 3371 MDPL</p>
-            </div>
-            <div class="hobby-item" data-hobby="Travelling">
-                <img src="/img/sb4.jpeg" alt="Travelling">
-                <p>View Bunga Edelweis</p>
-            </div>
-            <div class="hobby-item" data-hobby="Gaming">
-                <img src="/img/sb5.jpeg" alt="Gaming">
-                <p>POS 2</p>
-            </div>
+        <div class="game-card">
+            <img src="https://via.placeholder.com/100" alt="Game 3">
+            <h3>Game 3</h3>
+            <button>Top Up</button>
         </div>
-    </section>
 
-    <!-- Contact Me Section -->
-    <section id="contact" class="contact-section fade-in">
-        <h2>Contact Me</h2>
-        <p>If you want to get in touch with me, feel free to send a message below!</p>
-        <form action="#" method="POST" class="contact-form">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Your Name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Your Email" required>
-            </div>
-            <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-            </div>
-            <button type="submit" class="submit-button">Send Message</button>
-        </form>
-    </section>
+        <div class="game-card">
+            <img src="https://via.placeholder.com/100" alt="Game 4">
+            <h3>Game 4</h3>
+            <button>Top Up</button>
+        </div>
+    </div>
+</div>
 
-    <script src="/js/script.js"></script>
+<div class="contact-info">
+    <p>Hubungi kami di: <strong>support@abo.store</strong></p>
+    <p>Alamat: Jl. Contoh No. 123, Jakarta</p>
+</div>
+
+<footer>
+    <p>&copy; 2025 Abo Store - Semua Hak Dilindungi</p>
+</footer>
+
 </body>
 </html>
