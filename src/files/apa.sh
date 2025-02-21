@@ -140,6 +140,8 @@ if [ -z "$IP_ADDRESS" ]; then
     exit 1
 fi
 
+# Mendapatkan IP server
+server_ip=$(hostname -I | awk '{print $1}')
 
 # Final message
 echo -e "\033[1;32mWordPress installation is complete!\033[0m"
