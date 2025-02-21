@@ -131,17 +131,25 @@ ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
 echo "Restarting Apache server..."
 systemctl restart apache2
 
-# Get the server's IP address from the primary network interface
+# Attempt to get the server's IP address from the primary network interface (eth0 or ens33)
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
-# Check if IP address is found
+# Debugging output to check the result of hostname -I
+echo "Debug: hostname -I output: $IP_ADDRESS"
+
+# If the previous attempt didn't work, try using 'ip a' for more specific interfaces
+if [ -z "$IP_ADDRESS" ]; then
+    IP_ADDRESS=$(ip a | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d/ -f1 | head -n 1)
+fi
+
+# Debugging output to check the result of ip a command
+echo "Debug: ip a command output: $IP_ADDRESS"
+
+# If no IP address is found, alert the user
 if [ -z "$IP_ADDRESS" ]; then
     echo "Unable to determine the server's IP address. Please check your network configuration."
     exit 1
 fi
-
-# Mendapatkan IP server
-server_ip=$(hostname -I | awk '{print $1}')
 
 # Final message
 echo -e "\033[1;32mWordPress installation is complete!\033[0m"
