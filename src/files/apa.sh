@@ -142,8 +142,8 @@ fi
 
 # Final message
 echo -e "\033[1;32mWordPress installation is complete!\033[0m"
-echo -e "\033[1;34mYou can now access your WordPress site at: http://$IP_ADDRESS/wordpress\033[0m"
-echo -e "\033[1;34mYou can access phpMyAdmin at: http://$IP_ADDRESS/phpmyadmin\033[0m"
+echo -e "Akses phpMyAdmin di: ${CYAN}http://$server_ip/phpmyadmin${RESET}"
+echo -e "Akses WordPress di: ${CYAN}http://$server_ip/wordpress${RESET}"
 
 # Watermark / Signature at the end of the script with color and IP address
 echo -e "\033[1;35m--------------------------------------------------\033[0m"
