@@ -1,9 +1,18 @@
 #!/bin/bash
 
+# Function to handle installation errors
+install_check() {
+    if [ $? -ne 0 ]; then
+        echo "Error occurred during installation: $1"
+        exit 1
+    fi
+}
+
 # Install expect if it's not installed already
 if ! command -v expect &> /dev/null; then
     echo "Installing expect..."
     apt update -y && apt install -y expect
+    install_check "Failed to install expect"
 fi
 
 # Ask user for database name, username, and password at the start
@@ -25,14 +34,28 @@ read -s DB_PASS
 DB_PASS=${DB_PASS:-password}  # Set default to 'password' if empty input
 
 # Update and Install necessary packages
-echo "Updating package list and installing Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, and curl..."
+echo "Updating package list..."
 export DEBIAN_FRONTEND=noninteractive
-apt update -y || { echo "Failed to update package list"; exit 1; }
+apt update -y
+install_check "Failed to update package list"
 
-# Install packages
-apt install -y apache2 php phpmyadmin mariadb-server wget unzip curl || { echo "Failed to install required packages"; exit 1; }
+# Install Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, curl
+echo "Installing Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, and curl..."
+apt install -y apache2 php mariadb-server wget unzip curl
+install_check "Failed to install Apache2, PHP, MariaDB, wget, unzip, curl"
 
-# Unset DEBIAN_FRONTEND to allow interactive prompts for some packages like phpmyadmin
+# Configure phpMyAdmin installation to be non-interactive
+echo "Configuring phpMyAdmin installation..."
+echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/app-password-confirm password rootpassword" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/mysql/admin-pass password rootpassword" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/mysql/app-pass password rootpassword" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
+
+apt install -y phpmyadmin
+install_check "Failed to install phpMyAdmin"
+
+# Unset DEBIAN_FRONTEND for any further interactions
 unset DEBIAN_FRONTEND
 
 # Change to the web server's root directory
