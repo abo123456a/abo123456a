@@ -131,14 +131,18 @@ ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
 echo "Restarting Apache server..."
 systemctl restart apache2
 
+# Get the server's IP address
+IP_ADDRESS=$(hostname -I | awk '{print $1}')
+
 # Final message
 echo -e "\033[1;32mWordPress installation is complete!\033[0m"
-echo -e "\033[1;34mYou can now access your WordPress site at: http://<your-server-ip>/wordpress\033[0m"
-echo -e "\033[1;34mYou can access phpMyAdmin at: http://<your-server-ip>/phpmyadmin\033[0m"
+echo -e "\033[1;34mYou can now access your WordPress site at: http://$IP_ADDRESS/wordpress\033[0m"
+echo -e "\033[1;34mYou can access phpMyAdmin at: http://$IP_ADDRESS/phpmyadmin\033[0m"
 
-# Watermark / Signature at the end of the script with color
+# Watermark / Signature at the end of the script with color and IP address
 echo -e "\033[1;35m--------------------------------------------------\033[0m"
 echo -e "\033[1;33mScript created by: aboo\033[0m"
 echo -e "\033[1;36mFor more info, visit: abooo.vercel.app\033[0m"
+echo -e "\033[1;32mServer IP Address: $IP_ADDRESS\033[0m"
 echo -e "\033[1;32mterimakasih telah menggunakan skip aboo\033[0m"
 echo -e "\033[1;35m--------------------------------------------------\033[0m"
