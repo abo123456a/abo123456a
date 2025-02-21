@@ -153,7 +153,7 @@ fi
 
 # Final message
 echo -e "\033[1;32mWordPress installation is complete!\033[0m"
-echo -e "\033[1;32mAkses phpMyAdmin di: http://$IP_ADDRESS/phpmyadmin\033[0m"
+echo -e "Akses phpMyAdmin di: \033[1;36mhttp://$IP_ADDRESS/phpmyadmin\033[0m"
 echo -e "Akses WordPress di: \033[1;36mhttp://$IP_ADDRESS/wordpress\033[0m"
 
 # Watermark / Signature at the end of the script with color and IP address
@@ -161,5 +161,5 @@ echo -e "\033[1;35m--------------------------------------------------\033[0m"
 echo -e "\033[1;33mScript created by: aboo\033[0m"
 echo -e "\033[1;36mFor more info, visit: abooo.vercel.app\033[0m"
 echo -e "\033[1;32mServer IP Address: $IP_ADDRESS\033[0m"
-echo -e "\033[1;32mterimakasih telah menggunakan scrip aboo\033[0m"
+echo -e "\033[1;32mterimakasih telah menggunakan skip aboo\033[0m"
 echo -e "\033[1;35m--------------------------------------------------\033[0m"
