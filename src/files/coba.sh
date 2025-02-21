@@ -3,7 +3,7 @@
 # Install expect if it's not installed already
 if ! command -v expect &> /dev/null; then
     echo "Installing expect..."
-    apt install -y expect
+    apt update -y && apt install -y expect
 fi
 
 # Ask user for database name, username, and password at the start
@@ -25,10 +25,14 @@ read -s DB_PASS
 DB_PASS=${DB_PASS:-password}  # Set default to 'password' if empty input
 
 # Update and Install necessary packages
-echo "Installing Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, and curl..."
+echo "Updating package list and installing Apache2, PHP, phpMyAdmin, MariaDB, wget, unzip, and curl..."
 export DEBIAN_FRONTEND=noninteractive
-apt update -y
-apt install -y apache2 php phpmyadmin mariadb-server wget unzip curl
+apt update -y || { echo "Failed to update package list"; exit 1; }
+
+# Install packages
+apt install -y apache2 php phpmyadmin mariadb-server wget unzip curl || { echo "Failed to install required packages"; exit 1; }
+
+# Unset DEBIAN_FRONTEND to allow interactive prompts for some packages like phpmyadmin
 unset DEBIAN_FRONTEND
 
 # Change to the web server's root directory
@@ -37,19 +41,19 @@ cd /var/www/html/
 
 # Download WordPress
 echo "Downloading WordPress..."
-wget http://172.16.90.2/unduh/wordpress.zip
+wget http://172.16.90.2/unduh/wordpress.zip || { echo "Failed to download WordPress"; exit 1; }
 
 # Unzip the WordPress package
 echo "Unzipping WordPress..."
-unzip wordpress.zip
+unzip wordpress.zip || { echo "Failed to unzip WordPress"; exit 1; }
 
 # Set the appropriate permissions for the WordPress directory
 echo "Setting permissions for WordPress directory..."
 chmod -R 755 wordpress
+chown -R www-data:www-data /var/www/html/wordpress
 
 # Automating MySQL secure installation
 echo "Running mysql_secure_installation automatically..."
-
 SECURE_MYSQL=$(expect -c "
 spawn mysql_secure_installation
 expect \"Enter current password for root (enter for none):\"
