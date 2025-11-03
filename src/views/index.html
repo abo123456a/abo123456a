@@ -1,142 +1,300 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Toko top up game terpercaya, abo.store menyediakan top up untuk berbagai game populer.">
-    <meta name="author" content="Abo Store">
-    <title>Abo Store - Top Up Game</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Abo — Frontend Developer</title>
 
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-        }
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        .container {
-            width: 90%;
-            margin: 0 auto;
-        }
+  <style>
+    :root{
+      --bg:#071826;            /* very dark blue */
+      --panel:#0d2a36;         /* slightly lighter */
+      --accent:#19b0e6;        /* cyan accent */
+      --accent-dark:#0ea0d1;
+      --muted:#98b6c0;
+      --white:#ffffff;
+      --glass: rgba(255,255,255,0.04);
+      --hero-img: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=3f5f0a8f2d9f0d3d1d2d8d1d7cbb6a0c');
+    }
 
-        .game-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: space-around;
-            margin-top: 30px;
-        }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg) 0%, #03121a 100%);
+      color:var(--muted);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.55;
+    }
 
-        .game-card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 200px;
-            text-align: center;
-            padding: 20px;
-            transition: transform 0.3s ease;
-        }
+    /* Container */
+    .site{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns: 1fr 480px;
+      gap:48px;
+      align-items:center;
+      padding:48px 64px;
+    }
 
-        .game-card:hover {
-            transform: scale(1.05);
-        }
+    /* Top nav */
+    header{
+      position:fixed;
+      left:0; right:0;
+      top:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0 64px;
+      pointer-events:none; /* allow clicks only on children defined below */
+    }
+    .brand{
+      pointer-events:auto;
+      font-family:"Merriweather";
+      color:var(--white);
+      font-weight:700;
+      font-size:20px;
+      letter-spacing:0.5px;
+      text-decoration:none;
+    }
+    nav{
+      pointer-events:auto;
+    }
+    nav ul{
+      list-style:none;
+      display:flex;
+      gap:22px;
+      margin:0;
+      padding:0;
+      align-items:center;
+    }
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      padding:8px 10px;
+      border-radius:6px;
+      transition: all .18s ease;
+      font-size:15px;
+    }
+    nav a:hover{ color:var(--accent); transform:translateY(-2px); }
 
-        .game-card img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-        }
+    /* Left column: hero text */
+    .hero{
+      max-width:780px;
+      padding-top:40px;
+    }
+    .role{
+      color:var(--accent);
+      font-weight:600;
+      font-size:20px;
+      margin:12px 0 20px 0;
+      font-family:"Poppins";
+    }
+    h1{
+      margin:0;
+      font-family:"Merriweather";
+      color:var(--white);
+      font-weight:900;
+      font-size:64px;
+      line-height:1;
+      letter-spacing: -1px;
+    }
+    p.lead{
+      margin-top:22px;
+      color:#b6cbd2;
+      font-size:15px;
+      max-width:640px;
+    }
 
-        .game-card h3 {
-            font-size: 18px;
-            margin: 10px 0;
-        }
+    /* Buttons */
+    .actions{
+      margin-top:34px;
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px 26px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+      text-decoration:none;
+      transition: all .18s ease;
+      border:2px solid transparent;
+    }
+    .btn-primary{
+      background: linear-gradient(180deg,var(--accent) 0%, var(--accent-dark) 100%);
+      color:var(--panel);
+      box-shadow: 0 6px 18px rgba(14,160,209,0.12);
+    }
+    .btn-outline{
+      background:transparent;
+      color:var(--accent);
+      border-color: rgba(25,176,230,0.22);
+      box-shadow: inset 0 0 0 1px rgba(25,176,230,0.03);
+    }
+    .btn:hover{ transform: translateY(-3px); }
 
-        .game-card button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    /* Socials */
+    .socials{
+      margin-top:48px;
+      display:flex;
+      gap:18px;
+    }
+    .socials a{
+      width:44px;height:44px;border-radius:50%;
+      display:inline-grid;place-items:center;
+      border:2px solid rgba(25,176,230,0.14);
+      color:var(--accent);
+      text-decoration:none;
+      font-weight:600;
+      transition:transform .15s ease, background .12s ease;
+    }
+    .socials a:hover{ transform: translateY(-4px); background:rgba(255,255,255,0.02); }
 
-        .game-card button:hover {
-            background-color: #0056b3;
-        }
+    /* Right column: profile image card */
+    .profile-card{
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    .profile{
+      width:420px;
+      max-width:95%;
+      height:640px;
+      border-radius:32px 0 0 32px;
+      overflow:hidden;
+      background: linear-gradient(90deg, rgba(2,12,20,0.6), rgba(2,25,35,0.6));
+      box-shadow: 0 40px 80px rgba(2,15,20,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    /* image + colored glow */
+    .profile::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image: var(--hero-img);
+      background-size:cover;
+      background-position:center;
+      filter: saturate(1.1) contrast(0.95) brightness(0.9);
+      transform: scale(1.05);
+    }
+    .profile::after{
+      /* neon gradient overlay from right */
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient(600px 300px at 75% 40%, rgba(255,60,70,0.12), transparent 12%),
+                  radial-gradient(500px 240px at 85% 80%, rgba(25,176,230,0.12), transparent 12%);
+      mix-blend-mode:screen;
+    }
+    /* subtle border at bottom like the sample */
+    footer.bar{
+      position:fixed;
+      left:0;right:0;bottom:0;
+      height:10px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity:0.85;
+      filter: blur(.5px);
+    }
 
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-
-        .contact-info {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .contact-info p {
-            font-size: 16px;
-            color: #666;
-        }
-    </style>
+    /* Responsive */
+    @media (max-width:980px){
+      .site{ grid-template-columns: 1fr; padding:36px 28px; gap:28px;}
+      header{padding:0 28px}
+      .profile{ height:520px; border-radius:24px; margin-top:18px; order:2; }
+      .hero{ order:1; padding-top:80px }
+      h1{ font-size:48px; }
+    }
+    @media (max-width:480px){
+      h1{ font-size:36px; }
+      nav ul{ gap:12px; display:none } /* hide nav on very small screens for simplicity */
+      header{ padding:0 18px }
+      .profile{ height:420px; }
+    }
+  </style>
 </head>
 <body>
+  <!-- Top navigation -->
+  <header>
+    <a class="brand" href="#">abo.</a>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<header>
-    <h1>Abo Store - Top Up Game</h1>
-    <p>Top Up untuk berbagai game populer dengan harga terbaik!</p>
-</header>
+  <!-- Main layout -->
+  <main class="site" id="home">
+    <!-- Left / content -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div style="height:22px"></div> <!-- space so header doesn't overlap on small screens -->
+      <h1 id="hero-heading">Hi, I'm <span style="color:var(--accent)">abo</span></h1>
+      <div class="role">Frontend Developer</div>
 
-<div class="container">
-    <div class="game-list">
-        <div class="game-card">
-            <img src="https://via.placeholder.com/100" alt="Game 1">
-            <h3>Game 1</h3>
-            <button>Top Up</button>
-        </div>
+      <p class="lead">
+        Saya membuat antarmuka web yang rapi, cepat, dan responsif. Saya berfokus pada pengalaman pengguna, performa, dan detail visual. Berikut beberapa projek dan layanan yang saya tawarkan.
+      </p>
 
-        <div class="game-card">
-            <img src="https://via.placeholder.com/100" alt="Game 2">
-            <h3>Game 2</h3>
-            <button>Top Up</button>
-        </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="#contact" role="button">Hire Me</a>
+        <a class="btn btn-outline" href="#portfolio" role="button">Let's Talk</a>
+      </div>
 
-        <div class="game-card">
-            <img src="https://via.placeholder.com/100" alt="Game 3">
-            <h3>Game 3</h3>
-            <button>Top Up</button>
-        </div>
+      <div class="socials" aria-label="Social links">
+        <a href="#" title="Twitter" aria-label="Twitter">
+          <!-- simple Twitter circle icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M23 4.999a10.9 10.9 0 0 1-3.14.86 4.48 4.48 0 0 0 1.94-2.47 8.94 8.94 0 0 1-2.83 1.08 4.48 4.48 0 0 0-7.64 4.08A12.72 12.72 0 0 1 3.15 3.15a4.48 4.48 0 0 0 1.39 5.98 4.41 4.41 0 0 1-2.03-.56v.06a4.48 4.48 0 0 0 3.59 4.4c-.54.15-1.1.18-1.67.07a4.48 4.48 0 0 0 4.18 3.11A9 9 0 0 1 1 19.54 12.7 12.7 0 0 0 7.29 21c8.8 0 13.62-7.28 13.62-13.59 0-.21 0-.42-.02-.63A9.6 9.6 0 0 0 23 4.999z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="#" title="Facebook" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M22 12a10 10 0 1 0-11.5 9.9v-7H8v-3h2.5V9.3c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12H22z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="#" title="LinkedIn" aria-label="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M6.94 6.5a1.64 1.64 0 1 1 0-3.28 1.64 1.64 0 0 1 0 3.28zM6 8h3v9H6V8zm5 0h2.8v1.2h.04c.39-.74 1.34-1.52 2.76-1.52 2.95 0 3.5 1.94 3.5 4.46V17h-3v-4.1c0-1 .02-2.3-1.4-2.3-1.4 0-1.6 1.1-1.6 2.2V17H11V8z" fill="currentColor"/>
+          </svg>
+        </a>
+      </div>
+    </section>
 
-        <div class="game-card">
-            <img src="https://via.placeholder.com/100" alt="Game 4">
-            <h3>Game 4</h3>
-            <button>Top Up</button>
-        </div>
-    </div>
-</div>
+    <!-- Right / profile -->
+    <aside class="profile-card" aria-hidden="false" role="img" aria-label="Profile image of abo">
+      <div class="profile" title="abo">
+        <!-- If you prefer an <img> replace the pseudo element with an <img> tag -->
+      </div>
+    </aside>
+  </main>
 
-<div class="contact-info">
-    <p>Hubungi kami di: <strong>support@abo.store</strong></p>
-    <p>Alamat: Jl. Contoh No. 123, Jakarta</p>
-</div>
+  <footer class="bar" aria-hidden="true"></footer>
 
-<footer>
-    <p>&copy; 2025 Abo Store - Semua Hak Dilindungi</p>
-</footer>
+  <!-- small accessible skip/anchor links -->
+  <a id="about" style="position:fixed;left:-9999px;top:auto;bottom:auto;" aria-hidden="true">About</a>
+  <a id="services" style="position:fixed;left:-9999px;top:auto;bottom:auto;" aria-hidden="true">Services</a>
+  <a id="portfolio" style="position:fixed;left:-9999px;top:auto;bottom:auto;" aria-hidden="true">Portfolio</a>
+  <a id="contact" style="position:fixed;left:-9999px;top:auto;bottom:auto;" aria-hidden="true">Contact</a>
 
 </body>
-</html>
+          </html>
