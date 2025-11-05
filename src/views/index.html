@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Abo — Frontend Developer</title>
 
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
@@ -16,12 +16,13 @@
       --accent-dark:#0ea0d1;
       --muted:#98b6c0;
       --white:#ffffff;
+      --glass:rgba(255,255,255,0.04);
     }
 
-    *{box-sizing:border-box;}
-    html,body{height:100%;margin:0;font-family:"Poppins",sans-serif;background:linear-gradient(180deg,var(--bg) 0%,#03121a 100%);color:var(--muted);}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:"Poppins",sans-serif;background:linear-gradient(180deg,var(--bg),#03121a);color:var(--muted);scroll-behavior:smooth;}
 
-    /* --- LOGIN PAGE --- */
+    /* LOGIN PAGE */
     #login-page{
       display:flex;
       align-items:center;
@@ -36,7 +37,7 @@
       box-shadow:0 10px 40px rgba(0,0,0,0.5);
       text-align:center;
     }
-    .login-box h1{color:var(--white);font-weight:600;margin-bottom:8px;}
+    .login-box h1{color:var(--white);font-weight:700;margin-bottom:8px;}
     .login-box p{font-size:14px;margin-bottom:36px;}
     input{
       width:100%;padding:14px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);
@@ -53,35 +54,77 @@
     .brand{color:var(--accent);font-weight:700;letter-spacing:1px;font-size:18px;margin-bottom:28px;display:inline-block;}
     .error{color:#ff6666;font-size:13px;margin-bottom:12px;display:none;}
 
-    /* --- HOME PAGE --- */
-    #home-page{display:none;min-height:100vh;}
+    /* HOME PAGE */
+    #home-page{display:none;}
+
     header{
       display:flex;justify-content:space-between;align-items:center;
-      padding:20px 40px;
+      padding:20px 48px;position:fixed;width:100%;top:0;z-index:100;
+      background:rgba(7,24,38,0.9);backdrop-filter:blur(8px);
     }
     .brand-home{
-      color:var(--white);
-      font-family:"Merriweather";
-      font-weight:700;
-      font-size:22px;
-      text-decoration:none;
+      color:var(--white);font-family:"Merriweather";font-weight:700;font-size:22px;text-decoration:none;
     }
+    nav ul{
+      list-style:none;margin:0;padding:0;display:flex;gap:28px;
+    }
+    nav a{
+      color:var(--muted);text-decoration:none;font-weight:600;font-size:15px;
+      transition:all .2s ease;
+    }
+    nav a:hover{color:var(--accent);}
+
     .logout-btn{
       background:linear-gradient(180deg,var(--accent) 0%,var(--accent-dark) 100%);
-      color:var(--panel);
-      border:none;
-      padding:10px 18px;
-      border-radius:8px;
-      font-weight:600;
-      cursor:pointer;
+      color:var(--panel);border:none;padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer;
     }
-    .hero{
-      text-align:center;
-      margin-top:80px;
-      padding:0 20px;
+
+    /* Hero */
+    section.hero{
+      min-height:100vh;
+      display:flex;flex-direction:column;justify-content:center;align-items:center;
+      text-align:center;padding:0 20px;margin-top:80px;
     }
-    h1{color:var(--white);font-size:54px;font-family:"Merriweather";}
-    p{max-width:600px;margin:auto;color:#b6cbd2;}
+    .hero h1{color:var(--white);font-family:"Merriweather";font-size:64px;margin:0;}
+    .hero .role{color:var(--accent);font-weight:600;margin:12px 0;font-size:20px;}
+    .hero p{max-width:640px;color:#b6cbd2;}
+
+    /* Sections */
+    section{padding:100px 48px;text-align:center;}
+    h2{color:var(--white);font-family:"Merriweather";font-size:36px;margin-bottom:12px;}
+    .underline{width:60px;height:4px;background:var(--accent);margin:0 auto 36px;border-radius:2px;}
+    .content{max-width:800px;margin:auto;color:#b6cbd2;font-size:15px;line-height:1.6;}
+
+    /* Services */
+    .services{display:flex;flex-wrap:wrap;justify-content:center;gap:28px;margin-top:36px;}
+    .service{
+      background:var(--panel);padding:28px;border-radius:12px;max-width:240px;box-shadow:0 6px 18px rgba(0,0,0,0.3);
+    }
+    .service h3{color:var(--accent);margin-bottom:10px;}
+    .service p{font-size:14px;}
+
+    /* Portfolio */
+    .portfolio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:36px;}
+    .project{
+      background:var(--panel);border-radius:12px;overflow:hidden;transition:transform .2s ease;
+    }
+    .project:hover{transform:translateY(-6px);}
+    .project img{width:100%;height:180px;object-fit:cover;}
+    .project h4{color:var(--white);margin:14px;}
+    .project p{font-size:14px;margin:0 14px 18px;}
+
+    /* Contact */
+    .contact-info{margin-top:24px;}
+    .contact-info p{margin:6px 0;}
+
+    footer{
+      text-align:center;padding:20px;background:var(--panel);color:var(--muted);font-size:14px;
+    }
+
+    @media(max-width:700px){
+      .hero h1{font-size:42px;}
+      nav ul{display:none;}
+    }
   </style>
 </head>
 
@@ -102,15 +145,89 @@
   <!-- HOME PAGE -->
   <section id="home-page">
     <header>
-      <a href="#" class="brand-home">abo.</a>
+      <a href="#hero" class="brand-home">abo.</a>
+      <nav>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
       <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
 
-    <main class="hero">
-      <h1>Selamat Datang, Abo!</h1>
-      <p>Ini adalah halaman utama setelah berhasil login.<br>
-         Kamu bisa mengembangkannya menjadi portfolio atau dashboard pribadi.</p>
+    <main>
+      <section class="hero" id="hero">
+        <h1>Hi, I'm <span style="color:var(--accent)">abo</span></h1>
+        <div class="role">Frontend Developer</div>
+        <p>Saya membuat antarmuka web yang cepat, rapi, dan responsif. Fokus pada desain modern, performa tinggi, dan pengalaman pengguna yang baik.</p>
+      </section>
+
+      <section id="about">
+        <h2>Tentang Saya</h2>
+        <div class="underline"></div>
+        <div class="content">
+          Saya adalah seorang pengembang frontend dengan ketertarikan pada desain UI/UX dan animasi halus. Saya percaya bahwa tampilan bukan hanya soal estetika, tapi juga bagaimana pengguna merasakan alur interaksi dengan aplikasi.
+        </div>
+      </section>
+
+      <section id="services">
+        <h2>Layanan</h2>
+        <div class="underline"></div>
+        <div class="services">
+          <div class="service">
+            <h3>Web Design</h3>
+            <p>Merancang tampilan website modern dan ramah pengguna menggunakan prinsip desain UI/UX.</p>
+          </div>
+          <div class="service">
+            <h3>Frontend Development</h3>
+            <p>Membangun website responsif dengan HTML, CSS, dan JavaScript modern (React/Vue).</p>
+          </div>
+          <div class="service">
+            <h3>Optimization</h3>
+            <p>Mempercepat performa website agar ringan, cepat diakses, dan SEO-friendly.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="portfolio">
+        <h2>Portfolio</h2>
+        <div class="underline"></div>
+        <div class="portfolio-grid">
+          <div class="project">
+            <img src="https://picsum.photos/400/240?1" alt="Project 1">
+            <h4>Landing Page UI</h4>
+            <p>Desain halaman depan yang interaktif dengan animasi lembut dan layout fleksibel.</p>
+          </div>
+          <div class="project">
+            <img src="https://picsum.photos/400/240?2" alt="Project 2">
+            <h4>Dashboard Web App</h4>
+            <p>Panel admin responsif dengan data visualisasi dan filter dinamis.</p>
+          </div>
+          <div class="project">
+            <img src="https://picsum.photos/400/240?3" alt="Project 3">
+            <h4>Portfolio Personal</h4>
+            <p>Website pribadi yang menampilkan proyek dan informasi kontak secara elegan.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <h2>Kontak</h2>
+        <div class="underline"></div>
+        <div class="contact-info">
+          <p>Email: <strong>abo.dev@example.com</strong></p>
+          <p>LinkedIn: <a href="#" style="color:var(--accent)">linkedin.com/in/abo</a></p>
+          <p>GitHub: <a href="#" style="color:var(--accent)">github.com/abo</a></p>
+        </div>
+      </section>
     </main>
+
+    <footer>
+      &copy; 2025 Abo. All rights reserved.
+    </footer>
   </section>
 
   <!-- SCRIPT -->
@@ -124,7 +241,6 @@
       const user = document.getElementById('username').value.trim();
       const pass = document.getElementById('password').value.trim();
 
-      // username & password
       if(user === "abo" && pass === "12345"){
         localStorage.setItem("isLoggedIn","true");
         showHome();
@@ -136,6 +252,7 @@
     function showHome(){
       loginPage.style.display = "none";
       homePage.style.display = "block";
+      window.scrollTo(0,0);
     }
 
     function logout(){
@@ -144,7 +261,6 @@
       homePage.style.display = "none";
     }
 
-    // cek jika sudah login sebelumnya
     if(localStorage.getItem("isLoggedIn") === "true"){
       showHome();
     }
