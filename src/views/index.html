@@ -3,38 +3,324 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Abo — Frontend Developer</title>
+  <title>Abo — Portfolio</title>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#071826;            /* very dark blue */
-      --panel:#0d2a36;         /* slightly lighter */
-      --accent:#19b0e6;        /* cyan accent */
+      --bg:#071826;
+      --panel:#0d2a36;
+      --accent:#19b0e6;
       --accent-dark:#0ea0d1;
       --muted:#98b6c0;
       --white:#ffffff;
       --glass: rgba(255,255,255,0.04);
-      --hero-img: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=3f5f0a8f2d9f0d3d1d2d8d1d7cbb6a0c');
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{box-sizing:border-box;}
     body{
       margin:0;
-      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(180deg, var(--bg) 0%, #03121a 100%);
+      font-family:"Poppins",sans-serif;
+      background:linear-gradient(180deg,var(--bg),#03121a);
       color:var(--muted);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
       line-height:1.55;
+      min-height:100vh;
     }
 
-    /* Container */
-    .site{
-      min-height:100vh;
+    /* LOGIN PAGE */
+    #login-page{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      background:var(--bg);
+    }
+    .login-box{
+      background:var(--panel);
+      padding:48px 40px;
+      border-radius:16px;
+      width:320px;
+      text-align:center;
+      box-shadow:0 20px 60px rgba(0,0,0,0.4);
+    }
+    .brand{color:var(--accent);font-weight:700;letter-spacing:1px;font-size:20px;margin-bottom:28px;display:inline-block;}
+    h1{color:var(--white);font-weight:700;margin-bottom:8px;}
+    p{font-size:14px;margin-bottom:36px;}
+    input{
+      width:100%;padding:14px 16px;border-radius:8px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.04);
+      color:var(--white);font-size:15px;margin-bottom:18px;outline:none;
+      transition:border .2s ease;
+    }
+    input:focus{border-color:var(--accent);}
+    button{
+      width:100%;padding:14px;border:none;border-radius:8px;
+      background:linear-gradient(180deg,var(--accent) 0%,var(--accent-dark) 100%);
+      color:var(--panel);font-weight:600;font-size:15px;cursor:pointer;
+      transition:transform .2s ease;
+    }
+    button:hover{transform:translateY(-2px);}
+    .error{color:#ff6666;font-size:13px;margin-bottom:12px;display:none;}
+
+    /* HOME PAGE */
+    #home-page{display:none;min-height:100vh;}
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:20px 48px;
+      position:sticky;top:0;
+      background:rgba(7,24,38,0.85);
+      backdrop-filter:blur(8px);
+      z-index:10;
+    }
+    .brand-home{
+      color:var(--white);
+      font-family:"Merriweather";
+      font-weight:700;
+      font-size:22px;
+      text-decoration:none;
+    }
+    nav ul{
+      list-style:none;
+      display:flex;
+      gap:24px;
+      margin:0;padding:0;
+    }
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      transition:.2s;
+    }
+    nav a:hover{color:var(--accent);}
+    .logout-btn{
+      background:linear-gradient(180deg,var(--accent) 0%,var(--accent-dark) 100%);
+      color:var(--panel);
+      border:none;
+      padding:10px 18px;
+      border-radius:8px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    main{padding:80px 48px;}
+    section{margin-bottom:100px;}
+
+    /* Hero */
+    .hero{
+      text-align:center;
+      margin-top:40px;
+    }
+    .hero h1{
+      font-size:58px;
+      color:var(--white);
+      font-family:"Merriweather";
+      margin-bottom:18px;
+    }
+    .hero p{
+      max-width:600px;
+      margin:auto;
+      font-size:16px;
+      color:#b6cbd2;
+    }
+
+    /* Services */
+    .services{
+      text-align:center;
+    }
+    .services h2{
+      color:var(--white);
+      font-size:32px;
+      font-family:"Merriweather";
+      margin-bottom:40px;
+    }
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:28px;
+    }
+    .card{
+      background:var(--panel);
+      border-radius:16px;
+      padding:28px;
+      box-shadow:0 12px 30px rgba(0,0,0,0.3);
+      transition:transform .2s;
+    }
+    .card:hover{transform:translateY(-6px);}
+    .card h3{color:var(--accent);margin-bottom:12px;}
+    .card p{font-size:14px;}
+
+    /* Portfolio */
+    .portfolio h2{
+      color:var(--white);
+      font-size:32px;
+      font-family:"Merriweather";
+      margin-bottom:40px;
+      text-align:center;
+    }
+    .works{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:24px;
+    }
+    .work{
+      border-radius:14px;
+      overflow:hidden;
+      position:relative;
+      background:var(--panel);
+    }
+    .work img{
+      width:100%;
+      display:block;
+      height:200px;
+      object-fit:cover;
+      opacity:0.9;
+    }
+    .work h4{
+      position:absolute;
+      bottom:12px;
+      left:16px;
+      color:var(--white);
+      background:rgba(0,0,0,0.4);
+      padding:6px 10px;
+      border-radius:6px;
+      font-size:15px;
+    }
+
+    footer{
+      text-align:center;
+      padding:28px;
+      font-size:13px;
+      color:var(--muted);
+      border-top:1px solid rgba(255,255,255,0.05);
+    }
+
+    @media(max-width:600px){
+      .hero h1{font-size:40px;}
+      main{padding:60px 20px;}
+      header{padding:18px 20px;}
+      nav ul{display:none;}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- LOGIN PAGE -->
+  <section id="login-page">
+    <form class="login-box" id="loginForm" onsubmit="return handleLogin(event)">
+      <div class="brand">abo.</div>
+      <h1>Login</h1>
+      <p>Masukkan username dan password untuk masuk</p>
+      <div class="error" id="errorMsg">Username atau password salah!</div>
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Masuk</button>
+    </form>
+  </section>
+
+  <!-- HOME PAGE -->
+  <section id="home-page">
+    <header>
+      <a href="#" class="brand-home">abo.</a>
+      <nav>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#services">Layanan</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+        </ul>
+      </nav>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </header>
+
+    <main>
+      <section class="hero" id="hero">
+        <h1>Halo, Saya <span style="color:var(--accent)">Abo</span></h1>
+        <p>Seorang Frontend Developer yang berfokus pada tampilan antarmuka modern, interaktif, dan cepat.  
+        Saya menciptakan pengalaman web yang elegan dan mudah digunakan.</p>
+      </section>
+
+      <section class="services" id="services">
+        <h2>Layanan Saya</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Web Design</h3>
+            <p>Membuat desain website profesional, responsif, dan sesuai identitas merek kamu.</p>
+          </div>
+          <div class="card">
+            <h3>Frontend Development</h3>
+            <p>Mengubah desain menjadi kode HTML, CSS, dan JavaScript yang fungsional dan cepat.</p>
+          </div>
+          <div class="card">
+            <h3>UI/UX Optimization</h3>
+            <p>Meningkatkan pengalaman pengguna dengan tata letak yang efisien dan navigasi intuitif.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="portfolio" id="portfolio">
+        <h2>Projek Terbaru</h2>
+        <div class="works">
+          <div class="work">
+            <img src="https://images.unsplash.com/photo-1506765515384-028b60a970df?w=800&q=80" alt="Portfolio 1">
+            <h4>Landing Page Startup</h4>
+          </div>
+          <div class="work">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80" alt="Portfolio 2">
+            <h4>Dashboard Admin</h4>
+          </div>
+          <div class="work">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80" alt="Portfolio 3">
+            <h4>Portfolio Pribadi</h4>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © 2025 Abo. All rights reserved.
+    </footer>
+  </section>
+
+  <script>
+    const loginPage = document.getElementById('login-page');
+    const homePage = document.getElementById('home-page');
+    const errorMsg = document.getElementById('errorMsg');
+
+    function handleLogin(e){
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+
+      if(user === "abo" && pass === "12345"){
+        localStorage.setItem("isLoggedIn","true");
+        showHome();
+      } else {
+        errorMsg.style.display = "block";
+      }
+    }
+
+    function showHome(){
+      loginPage.style.display = "none";
+      homePage.style.display = "block";
+      window.scrollTo(0,0);
+    }
+
+    function logout(){
+      localStorage.removeItem("isLoggedIn");
+      loginPage.style.display = "flex";
+      homePage.style.display = "none";
+    }
+
+    if(localStorage.getItem("isLoggedIn") === "true"){
+      showHome();
+    }
+  </script>
+</body>
+</html>      min-height:100vh;
       display:grid;
       grid-template-columns: 1fr 480px;
       gap:48px;
@@ -414,4 +700,5 @@
   </script>
 </body>
 </html>
+
 
